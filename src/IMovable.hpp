@@ -15,11 +15,10 @@ class IMovable {
         desc:
             pomjera objekat na ekranu na osnovu proslijedjenih koordinata
         params:
-            dx - destinacija na x osi, 
-            dy - destinacija na y osi, 
+            destinationX - destinacija na x osi
         return: void
         */
-        virtual void move(int dx, int dy) = 0;
+        virtual void move(int destinationX) = 0;
         
 };
 

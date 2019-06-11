@@ -19,6 +19,8 @@ Engine::Engine(std::string windowTitle, int windowHeight, int windowWidth)
 Engine::~Engine(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    delete ss;
+    ss = nullptr;
     renderer = nullptr;
     window = nullptr;
     SDL_Quit();
@@ -31,6 +33,9 @@ void Engine::loop(){
 
     bool running = true;
     SDL_Event event;
+    std::string path {"./assets/alester/default/idle_blinking.png"};
+    ss = new SpriteSheet(path, renderer);
+    // drawables.push_back()
 
     while(running){
         frameStart = SDL_GetTicks();
@@ -39,8 +44,11 @@ void Engine::loop(){
                 running = false;
             } 
         }
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
+
+        ss->draw(renderer);
+
         SDL_RenderPresent(renderer);
 
         frameEnd = SDL_GetTicks();
