@@ -30,6 +30,8 @@ void Engine::loop(){
     bool running = true;
 
     SDL_Event event;
+    std::ifstream is {"./assets/alester/sheet.txt"};
+    SpriteSheet *spriteSheet = new SpriteSheet(is, renderer);
     
     while(running){
         frameStart = SDL_GetTicks();
@@ -40,6 +42,8 @@ void Engine::loop(){
         }
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
+
+
 
         SDL_RenderPresent(renderer);
 
