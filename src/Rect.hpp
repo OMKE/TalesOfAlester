@@ -13,6 +13,7 @@ class Rect {
     private:
         SDL_Rect *tile {nullptr};
     public:
+        Rect(int x, int y, int w, int h);
         Rect(std::ifstream &is);
         ~Rect();
         SDL_Rect* getTile();

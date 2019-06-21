@@ -32,19 +32,40 @@ void Engine::loop(){
     SDL_Event event;
     std::ifstream is {"./assets/alester/sheet.txt"};
     SpriteSheet *spriteSheet = new SpriteSheet(is, renderer);
+    // Sprite *sprite = new Sprite(spriteSheet);
+    Player *player = new Player(spriteSheet);
     
+
     while(running){
         frameStart = SDL_GetTicks();
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){
                 running = false;
+            } else {
+                
             }
+            
+            
         }
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
 
-
-
+        // Hvata sprajtove iz animacija i na osnovu prosljedjenog imena animacije prikazuje tj blituje 
+        // rectanglove, kada dodje do broja animacija resetujemo ga na 0 da bi opet krenuo od pocetka
+        // Napisati funkciju u draw da ovo radi i usporiti prebacivanje frejmova
+        // sprite->move(1, 1);
+        // for(size_t i = 0; i < sprite->getNumberOfAnimationsFromSpriteSheet("iddle_blinking"); i++){ 
+        //     SDL_RenderClear(renderer);
+        //     sprite->setInitialFrame(sprite->getInitialFrame() + 1);
+        //     if(sprite->getInitialFrame() == sprite->getNumberOfAnimationsFromSpriteSheet("iddle_blinking") - 1){
+        //         sprite->setInitialFrame(0);
+        //     }
+        //     sprite->draw(renderer);
+        // }
+        
+        
+        player->draw(renderer);
+        
         SDL_RenderPresent(renderer);
 
         frameEnd = SDL_GetTicks();
@@ -52,4 +73,7 @@ void Engine::loop(){
             SDL_Delay(maxDelay - (frameEnd - frameStart));
         }
     }
+    
+    delete player;
+    
 }   

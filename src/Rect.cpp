@@ -6,6 +6,17 @@ Rect::Rect(std::ifstream &is)
     : tile(new SDL_Rect){
         is >> tile->x >> tile->y >> tile->w >> tile->h;
     }
+
+Rect::Rect(int x, int y, int w, int h)
+    : tile(new SDL_Rect){
+        tile->x = x;
+        tile->y = y;
+        tile->w = w; 
+        tile->h = h;
+    }
+
+
+
 Rect::~Rect(){ delete tile; }
 
 SDL_Rect* Rect::getTile(){ return this->tile; }
