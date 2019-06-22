@@ -2,12 +2,12 @@
 #define EVENT_LISTENER_H
 
 #include "SDL2/SDL.h"
-/*
-** EventListener **
-desc:
-    Interface that listens for events from user
-*/
 
+/*
+** INTERFACE **
+desc:
+    Interface that listens for events
+*/
 class EventListener {
     public:
         virtual void listen(SDL_Event &e) = 0;

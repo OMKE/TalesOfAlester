@@ -12,8 +12,8 @@ class Player : public Sprite, public KeyboardEventListener {
         Player(SpriteSheet *sheet, int width = 128, int height = 128);
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
-        virtual void listen(SDL_KeyboardEvent &e) override;
-
+        virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
+        
 
 
 

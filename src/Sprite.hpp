@@ -14,11 +14,15 @@ class Sprite : public IDrawable, public IMovable {
     protected:
         SpriteSheet *spriteSheet {nullptr};
         SDL_Rect *spriteRect {nullptr};
+        SDL_RendererFlip flip {SDL_FLIP_HORIZONTAL};
         int initialFrame;
+        int frameCounter;
+        int frameSkip;
         int state;
-        enum State: int { IDDLE = 0, LEFT = 1, RIGHT = 2, JUMP = 3, JUMP_SLASH = 4, RUN_LEFT = 5, RUN_RIGHT=6, ATTACK = 7};
+        enum State: int { IDDLE_RIGHT = 0, IDDLE_LEFT = 1, LEFT = 2, RIGHT = 3, JUMP = 4, JUMP_SLASH =54, RUN_LEFT = 6, RUN_RIGHT=7, ATTACK = 8};
     public:
         Sprite(SpriteSheet *sheet, int width = 128, int height = 128);
+        ~Sprite();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
         int getSpriteRectX();
@@ -27,9 +31,9 @@ class Sprite : public IDrawable, public IMovable {
         int getSpriteRectH();
         int getInitialFrame();
         void setInitialFrame(int frame);
-        int getNumberOfAnimationsFromSpriteSheet(std::string animationName);
         int getState();
         void setState(int state);
+        void setFrameSkip(int frameSkip);
 };
 
 

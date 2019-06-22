@@ -34,7 +34,8 @@ void Engine::loop(){
     SpriteSheet *spriteSheet = new SpriteSheet(is, renderer);
     // Sprite *sprite = new Sprite(spriteSheet);
     Player *player = new Player(spriteSheet);
-    
+    listeners.push_back(player);
+    player->setFrameSkip(6);
 
     while(running){
         frameStart = SDL_GetTicks();
@@ -42,7 +43,16 @@ void Engine::loop(){
             if(event.type == SDL_QUIT){
                 running = false;
             } else {
-                
+                for(size_t i = 0; i < listeners.size(); i++) {
+                    listeners[i]->listen(event);
+                    if(event.type == SDL_KEYUP){
+                        if(player->getState() == 3){
+                            player->setState(0);
+                        } else {
+                            player->setState(1);
+                        }
+                    }   
+                }
             }
             
             
@@ -73,7 +83,9 @@ void Engine::loop(){
             SDL_Delay(maxDelay - (frameEnd - frameStart));
         }
     }
-    
     delete player;
+    
+    
+    
     
 }   

@@ -10,8 +10,8 @@
 #include "SpriteSheet.hpp"
 #include "Sprite.hpp"
 #include "Player.hpp"
-#include "EventListener.hpp"
 #include "KeyboardEventListener.hpp"
+#include "EventListener.hpp"
 
 class Engine {
     private:
@@ -19,6 +19,7 @@ class Engine {
         SDL_Renderer *renderer {nullptr};
         const int FPS = 60;
         std::vector<EventListener*> listeners;
+
     public:
         Engine(std::string windowTitle, int windowWidth = 1000, int windowHeight = 1000);
         void loop();

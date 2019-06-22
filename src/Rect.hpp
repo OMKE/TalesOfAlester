@@ -4,7 +4,7 @@
 #define RECT_H
 
 #include "fstream"
-
+#include <iostream>
 #include "SDL2/SDL.h"
 
 

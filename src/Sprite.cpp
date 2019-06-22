@@ -8,14 +8,20 @@ Sprite::Sprite(SpriteSheet *sheet, int width, int height) : IDrawable(), IMovabl
         spriteRect->w = width;
         spriteRect->h = height;
         initialFrame = 0;
+        frameCounter = 0;
+        frameSkip = 0;
     }
-
+Sprite::~Sprite(){
+    // delete spriteSheet;
+    // spriteSheet = nullptr;
+    delete spriteRect;
+}
 
 void Sprite::draw(SDL_Renderer *renderer){
     SDL_Rect destRect {200,200, 128, 128};
     // SDL_RenderCopy(renderer, spriteSheet->getTexture(), spriteSheet->getAnimations()["iddle_blinking"][1]->getTile(), spriteRect);
     
-    spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, &destRect);
+    // spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, &destRect);
     
 }
 
@@ -31,11 +37,7 @@ int Sprite::getSpriteRectY(){ return this->spriteRect->w; }
 int Sprite::getSpriteRectH(){ return this->spriteRect->h; }
 int Sprite::getState(){ return this->state; }
 void Sprite::setState(int state){ this->state = state; }
-
-
-int Sprite::getNumberOfAnimationsFromSpriteSheet(std::string animationName){
-    return this->spriteSheet->getNumberOfFramesPerAnimation(animationName);
-}
+void Sprite::setFrameSkip(int frameSkip){ this->frameSkip = frameSkip; }
 
 // testing
 int Sprite::getInitialFrame(){ return this->initialFrame; }
