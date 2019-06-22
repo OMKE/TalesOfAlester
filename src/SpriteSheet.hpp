@@ -14,7 +14,7 @@
 #include "Rect.hpp"
 
 
-typedef std::vector<Rect*> Rects;
+typedef std::vector<std::shared_ptr<Rect>> Rects;
 class SpriteSheet {
     private:
         SDL_Texture *texture {nullptr};    

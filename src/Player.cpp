@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
 
-Player::Player(SpriteSheet *sheet, int width, int height)
+Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
     : Sprite(sheet, width, height), KeyboardEventListener(), destRect(new SDL_Rect) {
         state = State::IDDLE_RIGHT;
         destRect->x = 600;

@@ -31,9 +31,9 @@ void Engine::loop(){
 
     SDL_Event event;
     std::ifstream is {"./assets/alester/sheet.txt"};
-    SpriteSheet *spriteSheet = new SpriteSheet(is, renderer);
+    auto spriteSheet = std::make_shared<SpriteSheet>(is, renderer);
     // Sprite *sprite = new Sprite(spriteSheet);
-    Player *player = new Player(spriteSheet);
+    auto player = std::make_shared<Player>(spriteSheet);    
     listeners.push_back(player);
     player->setFrameSkip(6);
 
@@ -83,7 +83,7 @@ void Engine::loop(){
             SDL_Delay(maxDelay - (frameEnd - frameStart));
         }
     }
-    delete player;
+    
     
     
     

@@ -29,7 +29,7 @@ SpriteSheet::SpriteSheet(std::ifstream &is, SDL_Renderer *renderer){
             // Rect se konstruise tako sto prima inputStream i popunjava koordinate
             // animations nam se sastoji od imena animacije i na njemu mapiranog vektora rectova(frejmova)
             // od kojih svaki ima koordinate
-            animations[animationName].push_back(new Rect(is));
+            animations[animationName].push_back(std::make_shared<Rect>(is));
         }
         // For destructor so we keep trakc of animations and its rects
         //animationNames.push_back(animationName);
