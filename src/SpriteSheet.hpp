@@ -22,11 +22,11 @@ class SpriteSheet {
         //std::vector<std::string> animationNames; // for dealloacting, TODO find better way
     public:
         SpriteSheet(std::ifstream &is, SDL_Renderer *renderer);
-        // ~SpriteSheet();
         void drawRect(SDL_Renderer *renderer, std::string animationName, int frame, SDL_Rect *destRect);
         void drawFlippedRect(SDL_Renderer *renderer, std::string animationName, int frame, SDL_Rect *destRect, SDL_RendererFlip flip);
         SDL_Texture* getTexture();
         std::map<std::string, Rects> getAnimations();
+        
 
 
 };

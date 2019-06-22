@@ -3,8 +3,8 @@
 
 Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight){
 
-    SDL_Init(SDL_INIT_VIDEO);
-    IMG_Init(IMG_INIT_PNG);
+    if(SDL_Init(SDL_INIT_VIDEO) < 0) throw SDL_GetError();
+    if(IMG_Init(IMG_INIT_PNG) < 0) throw SDL_GetError();
 
     window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -32,7 +32,6 @@ void Engine::loop(){
     SDL_Event event;
     std::ifstream is {"./assets/alester/sheet.txt"};
     auto spriteSheet = std::make_shared<SpriteSheet>(is, renderer);
-    // Sprite *sprite = new Sprite(spriteSheet);
     auto player = std::make_shared<Player>(spriteSheet);    
     listeners.push_back(player);
     player->setFrameSkip(6);
@@ -48,8 +47,10 @@ void Engine::loop(){
                     if(event.type == SDL_KEYUP){
                         if(player->getState() == 3){
                             player->setState(0);
-                        } else {
+                        } else if (player->getState() == 2){
                             player->setState(1);
+                        } else {
+                            player->setState(0);
                         }
                     }   
                 }
@@ -60,19 +61,6 @@ void Engine::loop(){
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
 
-        // Hvata sprajtove iz animacija i na osnovu prosljedjenog imena animacije prikazuje tj blituje 
-        // rectanglove, kada dodje do broja animacija resetujemo ga na 0 da bi opet krenuo od pocetka
-        // Napisati funkciju u draw da ovo radi i usporiti prebacivanje frejmova
-        // sprite->move(1, 1);
-        // for(size_t i = 0; i < sprite->getNumberOfAnimationsFromSpriteSheet("iddle_blinking"); i++){ 
-        //     SDL_RenderClear(renderer);
-        //     sprite->setInitialFrame(sprite->getInitialFrame() + 1);
-        //     if(sprite->getInitialFrame() == sprite->getNumberOfAnimationsFromSpriteSheet("iddle_blinking") - 1){
-        //         sprite->setInitialFrame(0);
-        //     }
-        //     sprite->draw(renderer);
-        // }
-        
         
         player->draw(renderer);
         

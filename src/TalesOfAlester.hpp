@@ -12,7 +12,7 @@ class TalesOfAlester {
     private:
         std::string name;
         std::string release;
-        std::unique_ptr<Engine> engine;
+        std::shared_ptr<Engine> engine;
     public:
         TalesOfAlester(std::string name = "Tales Of Alester", std::string relase = "0.1");
         ~TalesOfAlester() = default;

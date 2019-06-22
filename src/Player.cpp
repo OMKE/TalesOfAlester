@@ -11,12 +11,13 @@ Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
     }
 
 
-// TODO redefinisati metodu crtanja, npr da svaka animacija prolazi kroz svoje rectove i crta frejmove
-// TODO pogleadti u Engine.cpp metodi 55 linija koda
+
+
 void Player::draw(SDL_Renderer *renderer){
     
-    frameCounter++;
+
     if(state == State::IDDLE_RIGHT){
+        
         spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, destRect);
         
         if(frameCounter%frameSkip == 0) {
@@ -59,7 +60,19 @@ void Player::draw(SDL_Renderer *renderer){
             }
             frameCounter = 0;
         }
+    } else if (state == State::JUMP){
+        
+        spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
+    
+        if(frameCounter%frameSkip == 0) {
+            initialFrame++;
+            if(initialFrame >= 14) {
+                initialFrame = 0;
+            }
+            frameCounter = 0;
+        }
     }
+    frameCounter++;
 
     
     
@@ -101,8 +114,8 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
         state = State::LEFT;
         break;
     case SDLK_SPACE:
-        state = State::IDDLE_RIGHT;
-        this->destRect->y -= 50;
+        state = State::JUMP;
+        this->destRect->y -= 20;
         break;    
 
     default:
@@ -114,27 +127,3 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
 
 
 
-
-
-// if(e.type == SDL_KEYDOWN){
-//         if(e.keysym.sym == SDLK_d){
-//             state = State::RIGHT;
-            
-//         } else if (e.keysym.sym == SDLK_a){
-//             state = State::LEFT;
-            
-//         } else if (e.keysym.sym == SDLK_SPACE){
-//             state = State::JUMP;
-            
-//         } else if (e.keysym.sym == SDLK_LSHIFT && e.keysym.sym == SDLK_a){
-//             state = State::RUN_LEFT;
-            
-//         } else if (e.keysym.sym == SDLK_LSHIFT && e.keysym.sym == SDLK_d){
-//             state = State::RUN_RIGHT;
-            
-//         } else if (e.keysym.sym == SDLK_r){
-//             state = State::IDDLE;
-            
-//         }  
-
-//     }

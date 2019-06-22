@@ -23,8 +23,8 @@ class Sprite : public IDrawable, public IMovable {
     public:
         Sprite(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128);
         ~Sprite();
-        virtual void draw(SDL_Renderer *renderer) override;
-        virtual void move(int dX, int dY) override;
+        virtual void draw(SDL_Renderer *renderer) = 0;
+        virtual void move(int dX, int dY);
         int getSpriteRectX();
         int getSpriteRectY();
         int getSpriteRectW();

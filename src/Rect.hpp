@@ -11,7 +11,7 @@
 // SDL_Rect Wrapper class
 class Rect {
     private:
-        SDL_Rect *tile {nullptr};
+        SDL_Rect *tile;
     public:
         Rect(int x, int y, int w, int h);
         Rect(std::ifstream &is);

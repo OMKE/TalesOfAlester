@@ -17,13 +17,13 @@ Sprite::~Sprite(){
     delete spriteRect;
 }
 
-void Sprite::draw(SDL_Renderer *renderer){
-    SDL_Rect destRect {200,200, 128, 128};
+// void Sprite::draw(SDL_Renderer *renderer){
+    // SDL_Rect destRect {200,200, 128, 128};
     // SDL_RenderCopy(renderer, spriteSheet->getTexture(), spriteSheet->getAnimations()["iddle_blinking"][1]->getTile(), spriteRect);
     
     // spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, &destRect);
     
-}
+// }
 
 void Sprite::move(int dX, int dY){
     spriteRect->x += dX;

@@ -15,8 +15,8 @@
 
 class Engine {
     private:
-        SDL_Window *window {nullptr};
-        SDL_Renderer *renderer {nullptr};
+        SDL_Window *window;
+        SDL_Renderer *renderer;
         const int FPS = 60;
         std::vector<std::shared_ptr<EventListener>> listeners;
 

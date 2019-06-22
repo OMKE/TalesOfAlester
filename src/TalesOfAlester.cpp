@@ -2,6 +2,13 @@
 
 TalesOfAlester::TalesOfAlester(std::string name, std::string release)
     : name {name}, release{release}{
-        engine = std::make_unique<Engine>(name);
-        engine->loop();
+        try {
+            engine = std::make_shared<Engine>(name);    
+            engine->loop();
+        } catch(const int &e){
+            std::cerr << e << '\n';
+        }
+        
+        
+        
     }

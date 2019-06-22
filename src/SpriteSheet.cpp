@@ -25,7 +25,7 @@ SpriteSheet::SpriteSheet(std::ifstream &is, SDL_Renderer *renderer){
         is >> numberOfFrames;
         
     
-        for(size_t i = 0; i < numberOfFrames; i++){
+        for(size_t i = 0; i < static_cast<size_t>(numberOfFrames); i++){
             // Rect se konstruise tako sto prima inputStream i popunjava koordinate
             // animations nam se sastoji od imena animacije i na njemu mapiranog vektora rectova(frejmova)
             // od kojih svaki ima koordinate
@@ -41,14 +41,8 @@ SpriteSheet::SpriteSheet(std::ifstream &is, SDL_Renderer *renderer){
     
 
 }
-// SpriteSheet::~SpriteSheet(){
-//     for(auto animationName : animationNames){
-//         for(auto animation : animations[animationName]){
-//             delete animation;
-//         }
-//     }
 
-// }
+
 
 void SpriteSheet::drawRect(SDL_Renderer *renderer, std::string animationName, int frame,  SDL_Rect *destRect){
     SDL_RenderCopy(renderer, texture, animations[animationName][frame]->getTile(), destRect);
@@ -59,6 +53,7 @@ void SpriteSheet::drawFlippedRect(SDL_Renderer *renderer, std::string animationN
 
 SDL_Texture* SpriteSheet::getTexture(){ return this->texture; }
 std::map<std::string, Rects> SpriteSheet::getAnimations(){ return this->animations; }
+
 
 
 
