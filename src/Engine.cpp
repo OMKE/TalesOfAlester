@@ -3,14 +3,14 @@
 
 Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight){
 
-    if(SDL_Init(SDL_INIT_VIDEO) < 0) throw SDL_GetError();
-    if(IMG_Init(IMG_INIT_PNG) < 0) throw SDL_GetError();
+    SDL_Init(SDL_INIT_VIDEO);
+    IMG_Init(IMG_INIT_PNG);
 
     window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    if(!window) throw SDL_GetError();
-    if(!renderer) throw SDL_GetError();
+    // if(!window) throw SDL_GetError();
+    // if(!renderer) throw SDL_GetError();
 
 }
 Engine::~Engine(){
@@ -71,9 +71,6 @@ void Engine::loop(){
             SDL_Delay(maxDelay - (frameEnd - frameStart));
         }
     }
-    
-    
-    
-    
+     
     
 }   

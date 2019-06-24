@@ -14,65 +14,41 @@ Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
 
 
 void Player::draw(SDL_Renderer *renderer){
+
+
+    // Limits initial frame so it doesnt make overflow of vector of animations
+    if(state == State::IDDLE_RIGHT || state == State::IDDLE_LEFT){
+        if(initialFrame > 16) {
+            initialFrame = 0;
+        }
+    } else if(state == State::RIGHT || state == State::LEFT || state == State::JUMP){
+        if(initialFrame > 13) {
+                initialFrame = 0;
+        }
+    }
+
+    frameCounter++;
+    if(frameCounter%frameSkip == 0) {
+        initialFrame++;
+        frameCounter = 0;
+    }
+
+
     
 
     if(state == State::IDDLE_RIGHT){
-        
         spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, destRect);
-        
-        if(frameCounter%frameSkip == 0) {
-            initialFrame++;
-            if(initialFrame >= 17) {
-                initialFrame = 0;
-            }
-            frameCounter = 0;
-        }
     } else if (state == State::IDDLE_LEFT){
         spriteSheet->drawFlippedRect(renderer, "iddle_blinking", initialFrame, destRect, flip);
-        
-        if(frameCounter%frameSkip == 0) {
-            initialFrame++;
-            if(initialFrame >= 17) {
-                initialFrame = 0;
-            }
-            frameCounter = 0;
-        }
     } 
     else if (state == State::RIGHT){
-        
         spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
-    
-        if(frameCounter%frameSkip == 0) {
-            initialFrame++;
-            if(initialFrame >= 14) {
-                initialFrame = 0;
-            }
-            frameCounter = 0;
-        }
     } else if (state == State::LEFT){
-        
         spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, destRect, flip);
-    
-        if(frameCounter%frameSkip == 0) {
-            initialFrame++;
-            if(initialFrame >= 14) {
-                initialFrame = 0;
-            }
-            frameCounter = 0;
-        }
     } else if (state == State::JUMP){
-        
         spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
-    
-        if(frameCounter%frameSkip == 0) {
-            initialFrame++;
-            if(initialFrame >= 14) {
-                initialFrame = 0;
-            }
-            frameCounter = 0;
-        }
     }
-    frameCounter++;
+    
 
     
     

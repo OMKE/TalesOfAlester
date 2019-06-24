@@ -37,7 +37,13 @@ int Sprite::getSpriteRectY(){ return this->spriteRect->w; }
 int Sprite::getSpriteRectH(){ return this->spriteRect->h; }
 int Sprite::getState(){ return this->state; }
 void Sprite::setState(int state){ this->state = state; }
-void Sprite::setFrameSkip(int frameSkip){ this->frameSkip = frameSkip; }
+void Sprite::setFrameSkip(int frameSkip){ 
+    if(frameSkip < 0) {
+        frameSkip = 0;
+    }
+
+    this->frameSkip = frameSkip + 1; 
+}
 
 // testing
 int Sprite::getInitialFrame(){ return this->initialFrame; }

@@ -2,42 +2,27 @@
 #include "SpriteSheet.hpp"
 
 
-SpriteSheet::SpriteSheet(std::ifstream &is, SDL_Renderer *renderer){
+SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer){
     std::string path;
-    std::string animationName;
-    int numberOfFrames;
-
-    
+    std::string animation;
+    int totalFrames;
     is >> path;
 
     SDL_Surface *surface = IMG_Load(path.c_str());
     texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
-    
-    
-    
-    
-    
-    while(!is.eof()){
-        is >> animationName;
-        animations[animationName] = Rects();
 
-        is >> numberOfFrames;
-        
-    
-        for(size_t i = 0; i < static_cast<size_t>(numberOfFrames); i++){
-            // Rect se konstruise tako sto prima inputStream i popunjava koordinate
-            // animations nam se sastoji od imena animacije i na njemu mapiranog vektora rectova(frejmova)
-            // od kojih svaki ima koordinate
-            animations[animationName].push_back(std::make_shared<Rect>(is));
+    while(!is.eof()) {
+        is >> animation;
+        animations[animation] = Rects();
+
+        is >> totalFrames;
+        for(int i = 0; i < totalFrames; i++) {
+            animations[animation].push_back(new Rect(is));
         }
-        // For destructor so we keep trakc of animations and its rects
-        //animationNames.push_back(animationName);
-        
     }
-    // for(auto animation : animations["walking"]){
-    //     std::cout << animation->getTileW() << ", " << animation->getTileH() << std::endl;
-    // }
+
+    
     
 
 }

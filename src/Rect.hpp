@@ -14,7 +14,7 @@ class Rect {
         SDL_Rect *tile;
     public:
         Rect(int x, int y, int w, int h);
-        Rect(std::ifstream &is);
+        Rect(std::istream &is);
         ~Rect();
         SDL_Rect* getTile();
         int getTileX();
