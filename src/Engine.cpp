@@ -29,6 +29,7 @@ void Engine::loop(){
     int frameEnd = 0;
     bool running = true;
 
+
     SDL_Event event;
     std::ifstream is {"./assets/alester/sheet.txt"};
     auto spriteSheet = std::make_shared<SpriteSheet>(is, renderer);
@@ -49,7 +50,10 @@ void Engine::loop(){
                             player->setState(0);
                         } else if (player->getState() == 2){
                             player->setState(1);
-                        } else {
+                        } else if (player->getState() == 4) {
+                            player->setState(4);
+                        }
+                        else {
                             player->setState(0);
                         }
                     }   
