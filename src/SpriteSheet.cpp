@@ -18,7 +18,7 @@ SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer){
 
         is >> totalFrames;
         for(int i = 0; i < totalFrames; i++) {
-            animations[animation].push_back(new Rect(is));
+            animations[animation].push_back(std::make_shared<Rect>(is));
         }
     }
 

@@ -10,14 +10,16 @@ Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
         destRect->h = height;
     }
 
-
+Player::~Player(){
+    delete destRect;
+}
 
 
 void Player::draw(SDL_Renderer *renderer){
 
     // reset helper ! delete, when it hit walls repeat
-    if(this->destRect->y <= 0 || this->destRect->y >= 1000 || this->destRect->x >= 1000){
-        this->destRect->y = 800;
+    if(this->destRect->y <= 0 || this->destRect->y > 800 || this->destRect->x >= 1000){
+        this->destRect->y = 600;
         this->destRect->x = 10;
     }
 
@@ -55,6 +57,7 @@ void Player::draw(SDL_Renderer *renderer){
         spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, destRect, flip);
     } else if (state == State::JUMP){
         // check time after it jumped, fall down after one second
+    // TODO popraviti kad se promijeni state da se vrati skok
     if((SDL_GetTicks() / 1000) - this->startTime >= 1){
         // provjeravamo da li je y koordiranta manja od pocetno zadane, tad znamo da je igrac skocio
             if(this->destRect->y <= 600){
@@ -64,7 +67,7 @@ void Player::draw(SDL_Renderer *renderer){
                 startTime = 0;
             } 
     }
-        spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, destRect, flip);
+        spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
     }
         
     

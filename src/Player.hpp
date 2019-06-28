@@ -11,6 +11,7 @@ class Player : public Sprite, public KeyboardEventListener, public Timer {
         SDL_Rect *destRect {nullptr};
     public:
         Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128);
+        ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
         virtual void start() override;
