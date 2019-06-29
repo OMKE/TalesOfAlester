@@ -32,10 +32,15 @@ void Engine::loop(){
 
     SDL_Event event;
     std::ifstream is {"./assets/alester/sheet.txt"};
+
+    // Initializaiton
     auto spriteSheet = std::make_shared<SpriteSheet>(is, renderer);
-    auto player = std::make_shared<Player>(spriteSheet);    
+    auto bg = std::make_shared<Background>("./assets/village.png", renderer);
+    auto player = std::make_shared<Player>(spriteSheet, 128, 128, bg);    
+    
     listeners.push_back(player);
     player->setFrameSkip(6);
+
 
     while(running){
         frameStart = SDL_GetTicks();
@@ -65,8 +70,9 @@ void Engine::loop(){
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
 
-        
+        bg->draw(renderer);
         player->draw(renderer);
+        
         
         SDL_RenderPresent(renderer);
 
@@ -75,6 +81,8 @@ void Engine::loop(){
             SDL_Delay(maxDelay - (frameEnd - frameStart));
         }
     }
+
+
      
     
 }   

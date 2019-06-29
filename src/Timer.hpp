@@ -8,28 +8,28 @@
 
 
 
-class Gravity {
-    protected:
-        float velocity = 2.0;
-        float gravity = -2;
+// class Gravity {
+//     protected:
+//         float velocity = 2.0;
+//         float gravity = -2;
 
         
 
-        float previousTime = 0;
+//         float previousTime = 0;
 
-        // Get current time
-        float currentTime;
+//         // Get current time
+//         float currentTime;
 
         
-        
-        
-
-    public:
-        // virtual void jump() = 0;
         
         
 
-};
+//     public:
+//         // virtual void jump() = 0;
+        
+        
+
+// };
 
 class Timer {
     protected:

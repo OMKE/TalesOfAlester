@@ -1,27 +1,33 @@
 #include "Player.hpp"
 
 
-Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
-    : Sprite(sheet, width, height), KeyboardEventListener(), destRect(new SDL_Rect) {
+Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg)
+    : Sprite(sheet, width, height), KeyboardEventListener(), Timer() , background {bg} {
+
+        
+
         state = State::IDDLE_RIGHT;
-        destRect->x = 10;
-        destRect->y = 600;
-        destRect->w = width;
-        destRect->h = height;
+        spriteRect->x = 10;
+        spriteRect->y = 600;
+        
+
+        
+        
+        
     }
 
 Player::~Player(){
-    delete destRect;
+
 }
 
 
 void Player::draw(SDL_Renderer *renderer){
 
     // reset helper ! delete, when it hit walls repeat
-    if(this->destRect->y <= 0 || this->destRect->y > 800 || this->destRect->x >= 1000){
-        this->destRect->y = 600;
-        this->destRect->x = 10;
-    }
+    // if(this->spriteRect->y <= 0 || this->spriteRect->y > 800 || this->spriteRect->x >= 1000){
+    //     this->spriteRect->y = 600;
+    //     this->spriteRect->x = 10;
+    // }
 
     
     // Limits initial frame so it doesnt make overflow of vector of animations
@@ -44,31 +50,38 @@ void Player::draw(SDL_Renderer *renderer){
 
     
 
+    
+
+    
+    
+
     if(state == State::IDDLE_RIGHT){
         
-        spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, destRect);
+        spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, spriteRect);
     } else if (state == State::IDDLE_LEFT){
-        spriteSheet->drawFlippedRect(renderer, "iddle_blinking", initialFrame, destRect, flip);
+        spriteSheet->drawFlippedRect(renderer, "iddle_blinking", initialFrame, spriteRect, flip);
     } else if (state == State::RIGHT){
         
-        spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
+        spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
     } else if (state == State::LEFT){
         
-        spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, destRect, flip);
+        spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, spriteRect, flip);
     } else if (state == State::JUMP){
         // check time after it jumped, fall down after one second
     // TODO popraviti kad se promijeni state da se vrati skok
     if((SDL_GetTicks() / 1000) - this->startTime >= 1){
         // provjeravamo da li je y koordiranta manja od pocetno zadane, tad znamo da je igrac skocio
-            if(this->destRect->y <= 600){
-                this->destRect->y += 30;
-                this->destRect->x += 30;
+            if(this->spriteRect->y <= 600){
+                this->spriteRect->y += 30;
+                this->spriteRect->x += 30;
                 // reset start time variable so player is able to jump again
                 startTime = 0;
             } 
     }
-        spriteSheet->drawRect(renderer, "walking", initialFrame, destRect);
+        spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
     }
+
+    
         
     
 }
@@ -78,8 +91,9 @@ void Player::start(){
     if(!startTime){
         startTime = SDL_GetTicks() / 1000;
     }
-    this->destRect->y -= 30;
-    this->destRect->x += 30; // test
+    // this->spriteRect->y -= 30;
+    // this->spriteRect->x += 30; // test
+    move(30, -30);
 }
 /*
 ** move **
@@ -91,8 +105,11 @@ params:
 return: void - 
 */
 void Player::move(int dX, int dY){
-    this->destRect->x += dX;
-    this->destRect->y += dY;
+    
+    this->spriteRect->x += dX;
+    this->spriteRect->y += dY;
+    this->background->setSrcRectX(this->background->getSrcRectX() + dX);
+    this->background->setDestRectX(this->background->getDestRectX() - dX);
 }
 
 /*
@@ -109,10 +126,10 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     {
     case SDLK_d:
         this->state = State::RIGHT;
-        this->destRect->x += 10;
+        move(10, 0);
         break;
     case SDLK_a:
-        this->destRect->x -= 10;
+        move(-10,0);
         state = State::LEFT;
         break;
     case SDLK_SPACE:
