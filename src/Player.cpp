@@ -2,12 +2,12 @@
 
 
 Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg)
-    : Sprite(sheet, width, height), KeyboardEventListener(), Timer() , background {bg} {
+    : Sprite(sheet, width, height), KeyboardEventListener(), Timer() , bg {bg} {
 
         
 
         state = State::IDDLE_RIGHT;
-        spriteRect->x = 10;
+        spriteRect->x = 50;
         spriteRect->y = 600;
         
 
@@ -51,7 +51,7 @@ void Player::draw(SDL_Renderer *renderer){
     
 
     
-
+    
     
     
 
@@ -105,11 +105,22 @@ params:
 return: void - 
 */
 void Player::move(int dX, int dY){
+    if(spriteRect->x <= 10 && dX == -10){
+        return;
+    }
     
-    this->spriteRect->x += dX;
-    this->spriteRect->y += dY;
-    this->background->setSrcRectX(this->background->getSrcRectX() + dX);
-    this->background->setDestRectX(this->background->getDestRectX() - dX);
+    if(spriteRect->x >= 300 || spriteRect->x + dX >= 300){
+        this->bg->setSrcRectX(this->bg->getSrcRectX());
+        this->bg->setDestRectX(this->bg->getDestRectX());
+    } else {
+        spriteRect->x += dX;
+        spriteRect->y += dY;
+    }
+
+    if(dX > 0 ){
+        this->bg->setSrcRectX(this->bg->getSrcRectX() + dX);
+        this->bg->setDestRectX(this->bg->getDestRectX() - dX);
+    } 
 }
 
 /*

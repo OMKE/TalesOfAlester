@@ -17,6 +17,7 @@ class Background : public IDrawable {
         SDL_Rect *srcRect;
         SDL_Rect *destRect;
         
+        
     public:
         Background(std::string path, SDL_Renderer *renderer);
         ~Background();
@@ -24,9 +25,11 @@ class Background : public IDrawable {
         
         void setSrcRectX(int x);
         int getSrcRectX();
-
         void setDestRectX(int x);
         int getDestRectX();
+        
+
+
 
 
 };  

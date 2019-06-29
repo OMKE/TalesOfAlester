@@ -16,13 +16,13 @@ Background::Background(std::string path, SDL_Renderer *renderer)
 
         destRect->x = 0;
         destRect->y = 0;
-        destRect->w = 2500;
+        destRect->w = 10000;
         destRect->h = 1000;
         
 
         srcRect->x = 0;
         srcRect->y = 0;
-        srcRect->w = 3000;
+        srcRect->w = 15000;
         srcRect->h = 1500;
 
 
@@ -30,7 +30,9 @@ Background::Background(std::string path, SDL_Renderer *renderer)
     }
 
 void Background::draw(SDL_Renderer *renderer){
+    
     SDL_RenderCopy(renderer, bg, srcRect, destRect);
+    
 }
 
 Background::~Background(){
@@ -42,6 +44,5 @@ Background::~Background(){
 
 void Background::setSrcRectX(int x){ this->srcRect->x = x; }
 int Background::getSrcRectX(){ return this->srcRect->x; }
-
 void Background::setDestRectX(int x){ this->destRect->x = x; }
 int Background::getDestRectX(){ return this->destRect->x; }

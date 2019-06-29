@@ -10,7 +10,7 @@
 
 class Player : public Sprite, public KeyboardEventListener, public Timer{
     private:
-        std::shared_ptr<Background> background;
+        std::shared_ptr<Background> bg;
     public:
         Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128, std::shared_ptr<Background> bg = nullptr);
         ~Player();
