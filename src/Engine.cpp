@@ -31,15 +31,28 @@ void Engine::loop(){
 
 
     SDL_Event event;
-    std::ifstream is {"./assets/alester/sheet.txt"};
-
     // Initializaiton
-    auto spriteSheet = std::make_shared<SpriteSheet>(is, renderer);
-    auto bg = std::make_shared<Background>("./assets/village.png", renderer);
-    auto player = std::make_shared<Player>(spriteSheet, 128, 128, bg);    
+    std::ifstream is {"./assets/sheet.txt"};
+    auto bg = std::make_shared<Background>("./assets/world/village.png", renderer);
+    auto playerSpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 2);
+    auto enemySpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 1);
+    auto player = std::make_shared<Player>(playerSpriteSheet, 128, 128, bg);
+    auto enemy = std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg);
     
+
+    
+
+    
+        
+
+    
+    drawables.push_back(bg);
+    drawables.push_back(player);
+    drawables.push_back(enemy);
+
     listeners.push_back(player);
     player->setFrameSkip(6);
+    enemy->setFrameSkip(4);
 
 
     while(running){
@@ -70,8 +83,10 @@ void Engine::loop(){
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
 
-        bg->draw(renderer);
-        player->draw(renderer);
+        for(const auto drawable: drawables){
+            drawable->draw(renderer);
+        }
+        
         
         
         SDL_RenderPresent(renderer);

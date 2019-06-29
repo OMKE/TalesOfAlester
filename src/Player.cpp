@@ -2,13 +2,13 @@
 
 
 Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg)
-    : Sprite(sheet, width, height), KeyboardEventListener(), Timer() , bg {bg} {
+    : Sprite(sheet, width, height), KeyboardEventListener(), bg {bg} {
 
         
 
         state = State::IDDLE_RIGHT;
         spriteRect->x = 50;
-        spriteRect->y = 600;
+        spriteRect->y = 603;
         
 
         
@@ -66,35 +66,26 @@ void Player::draw(SDL_Renderer *renderer){
     } else if (state == State::LEFT){
         
         spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, spriteRect, flip);
-    } else if (state == State::JUMP){
+    // } else if (state == State::JUMP){
         // check time after it jumped, fall down after one second
     // TODO popraviti kad se promijeni state da se vrati skok
-    if((SDL_GetTicks() / 1000) - this->startTime >= 1){
+    // if((SDL_GetTicks() / 1000) - this->startTime >= 1){
         // provjeravamo da li je y koordiranta manja od pocetno zadane, tad znamo da je igrac skocio
-            if(this->spriteRect->y <= 600){
-                this->spriteRect->y += 30;
-                this->spriteRect->x += 30;
+    //         if(this->spriteRect->y <= 600){
+    //             this->spriteRect->y += 30;
+    //             this->spriteRect->x += 30;
                 // reset start time variable so player is able to jump again
-                startTime = 0;
-            } 
+    //             startTime = 0;
+    //         } 
+    // }
+    //     spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
     }
-        spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
-    }
-
-    
-        
     
 }
 
-// Start jump
-void Player::start(){
-    if(!startTime){
-        startTime = SDL_GetTicks() / 1000;
-    }
-    // this->spriteRect->y -= 30;
-    // this->spriteRect->x += 30; // test
-    move(30, -30);
-}
+
+    
+
 /*
 ** move **
 desc:
@@ -109,18 +100,27 @@ void Player::move(int dX, int dY){
         return;
     }
     
-    if(spriteRect->x >= 300 || spriteRect->x + dX >= 300){
-        this->bg->setSrcRectX(this->bg->getSrcRectX());
-        this->bg->setDestRectX(this->bg->getDestRectX());
-    } else {
-        spriteRect->x += dX;
-        spriteRect->y += dY;
-    }
 
-    if(dX > 0 ){
+    if(spriteRect->x <= 300 || spriteRect->x + dX <= 300 || dX < 0){
+        if(dX < 0){
+            spriteRect->x += dX;
+            spriteRect->y += dY;    
+        } else if (dX > 0) {
+            spriteRect->x += dX / 3;
+            spriteRect->y += dY / 3;
+            
+        }
+        
+        
+    }
+    
+    if(dX > 0){
         this->bg->setSrcRectX(this->bg->getSrcRectX() + dX);
         this->bg->setDestRectX(this->bg->getDestRectX() - dX);
     } 
+    
+
+    
 }
 
 /*
@@ -136,16 +136,19 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     switch (event.keysym.sym)
     {
     case SDLK_d:
-        this->state = State::RIGHT;
+        state = State::RIGHT;
         move(10, 0);
         break;
     case SDLK_a:
-        move(-10,0);
         state = State::LEFT;
+        move(-10,0);
+        
+        
         break;
-    case SDLK_SPACE:
+    case SDLK_SPACE:        
+        
         state = State::JUMP;
-        start();
+        
         break;    
 
     default:

@@ -8,6 +8,7 @@ Rect::Rect(std::istream &is){
         tile = new SDL_Rect;
         
         is >> x >> y >> w >> h;
+        // std::cout << "x " << x << " y " << y << " w " << w << " h " << h << std::endl;
 
         tile->x = x;
         tile->y = y;

@@ -10,10 +10,11 @@
 #include "SpriteSheet.hpp"
 #include "Sprite.hpp"
 #include "Player.hpp"
+#include "Enemy.hpp"
 #include "KeyboardEventListener.hpp"
 #include "EventListener.hpp"
 #include "Background.hpp"
-#include "Camera.hpp"
+#include "IDrawable.hpp"
 
 class Engine {
     private:
@@ -21,7 +22,7 @@ class Engine {
         SDL_Renderer *renderer;
         const int FPS = 60;
         std::vector<std::shared_ptr<EventListener>> listeners;
-        std::shared_ptr<Camera> camera;
+        std::vector<std::shared_ptr<IDrawable>> drawables;
     public:
         Engine(std::string windowTitle, int windowWidth = 1000, int windowHeight = 1000);
         void loop();

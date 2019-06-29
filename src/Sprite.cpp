@@ -4,7 +4,7 @@
 Sprite::Sprite(std::shared_ptr<SpriteSheet> sheet, int width, int height) : IDrawable(), IMovable(), 
     spriteSheet{sheet}, spriteRect(new SDL_Rect) {
         spriteRect->x = 0;
-        spriteRect->y = 0;
+        spriteRect->y = 603;
         spriteRect->w = width;
         spriteRect->h = height;
         initialFrame = 0;

@@ -4,11 +4,11 @@
 
 #include "Sprite.hpp"
 #include "KeyboardEventListener.hpp"
-#include "Timer.hpp"
-#include "Camera.hpp"
+
+
 #include "Background.hpp"
 
-class Player : public Sprite, public KeyboardEventListener, public Timer{
+class Player : public Sprite, public KeyboardEventListener{
     private:
         std::shared_ptr<Background> bg;
     public:
@@ -16,7 +16,7 @@ class Player : public Sprite, public KeyboardEventListener, public Timer{
         ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
-        virtual void start() override;
+        
         virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
         
 

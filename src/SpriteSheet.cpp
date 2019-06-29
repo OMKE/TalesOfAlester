@@ -2,24 +2,28 @@
 #include "SpriteSheet.hpp"
 
 
-SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer){
+SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer, int numberOfAnimations){
     std::string path;
     std::string animation;
     int totalFrames;
     is >> path;
 
+    // std::cout << path << std::endl;
+
     SDL_Surface *surface = IMG_Load(path.c_str());
     texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
-
-    while(!is.eof()) {
+    int counter = 0;
+    while(counter < numberOfAnimations) {
         is >> animation;
+        
         animations[animation] = Rects();
 
         is >> totalFrames;
         for(int i = 0; i < totalFrames; i++) {
             animations[animation].push_back(std::make_shared<Rect>(is));
         }
+        counter++;
     }
 
     
