@@ -104,11 +104,15 @@ void Player::move(int dX, int dY){
         return;
     }
 
-    
+    // Restricts to move to the end of texture
     if(bg->getSrcRect()->x + dX > 13930){
         return;
     }
     
+    // Allows player to move to the center and back, but when it's centered then it moves the background
+    if(spriteRect->x + dX <= 300 && spriteRect->x +dX >= 50){
+        spriteRect->x += dX / 3;
+    }
     
     // spriteRect->x += dX;
     // spriteRect->y += dY;
