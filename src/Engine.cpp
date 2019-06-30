@@ -53,9 +53,15 @@ void Engine::loop(){
 
     
     drawables.push_back(bg);
-    drawables.push_back(player);
     drawables.push_back(camera);
+    drawables.push_back(player);
+    
     drawables.push_back(enemy);
+
+    movables.push_back(player);
+    movables.push_back(enemy);
+
+    
     
 
     listeners.push_back(player);
@@ -92,10 +98,16 @@ void Engine::loop(){
         SDL_SetRenderDrawColor(renderer, 168, 230, 255, 255);
         SDL_RenderClear(renderer);
 
-        camera->follow();
+        for(const auto movable: movables){
+            movable->move();
+        }
+
+
+        
         for(const auto drawable: drawables){
             drawable->draw(renderer);
         }
+        camera->follow();
         
         
         

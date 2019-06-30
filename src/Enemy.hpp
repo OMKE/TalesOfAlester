@@ -12,6 +12,7 @@ class Enemy : public Sprite {
         ~Enemy();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
+        virtual void move() override;
         
 };
 

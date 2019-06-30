@@ -16,6 +16,7 @@
 #include "Background.hpp"
 #include "IDrawable.hpp"
 #include "Camera.hpp"
+#include "IMovable.hpp"
 
 class Engine {
     private:
@@ -24,6 +25,7 @@ class Engine {
         const int FPS = 60;
         std::vector<std::shared_ptr<EventListener>> listeners;
         std::vector<std::shared_ptr<IDrawable>> drawables;
+        std::vector<std::shared_ptr<IMovable>> movables;
         std::shared_ptr<Camera> camera;
         int windowWidth;
         int windowHeight;

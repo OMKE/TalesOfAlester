@@ -15,7 +15,7 @@ class Player : public Sprite, public KeyboardEventListener{
         ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
-        
+        virtual void move() override;
         virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
         
 

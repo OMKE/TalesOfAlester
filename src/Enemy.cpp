@@ -39,3 +39,7 @@ void Enemy::move(int dX, int dY){
     spriteRect->x += dX;
     spriteRect->y += dY;    
 }
+
+void Enemy::move(){
+    
+}

@@ -56,12 +56,8 @@ void Player::draw(SDL_Renderer *renderer){
     
 
     
-    
-    
-    
 
     if(state == State::IDDLE_RIGHT){
-        
         spriteSheet->drawRect(renderer, "iddle_blinking", initialFrame, spriteRect);
     } else if (state == State::IDDLE_LEFT){
         spriteSheet->drawFlippedRect(renderer, "iddle_blinking", initialFrame, spriteRect, flip);
@@ -110,16 +106,16 @@ void Player::move(int dX, int dY){
     spriteRect->x += dX;
     spriteRect->y += dY;
     
-    
+}
 
-
-    
+void Player::move(){
+    Sprite::move();
 }
 
 /*
 ** listenForKeyboardEvent **
 desc:
-    Waits for key presses and accordingly moves the character and changes states
+    Waits for key presses and changes states accordingly 
 params:
     event - structure that contains keyboard button information, 
 return:  void - 
@@ -130,13 +126,9 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     {
     case SDLK_d:
         state = State::RIGHT;
-        move(15, 0);
         break;
     case SDLK_a:
         state = State::LEFT;
-        move(-15,0);
-        
-        
         break;
     case SDLK_SPACE:        
         

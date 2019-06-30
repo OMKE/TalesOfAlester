@@ -31,6 +31,24 @@ void Sprite::move(int dX, int dY){
     spriteRect->y += dY;
 }
 
+void Sprite::move(){
+    if(state != 0){
+        // walking left
+        if(state == 2){
+            move(-2, 0);
+        }
+        // walking right
+        if(state == 3){
+            move(2, 0);
+        }
+        // jumping
+        if(state == 4){
+            move(5, 5);
+        }
+    }
+}
+
+
 // Getters and Setters
 int Sprite::getSpriteRectX(){ return this->spriteRect->x; }
 int Sprite::getSpriteRectW(){ return this->spriteRect->y; }

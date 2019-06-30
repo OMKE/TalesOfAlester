@@ -6,7 +6,7 @@
 class IMovable {
     public:
         virtual void move(int dX, int dY) = 0;
-        
+        virtual void move() = 0;
 };
 
 
