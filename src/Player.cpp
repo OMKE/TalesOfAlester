@@ -11,13 +11,12 @@ Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::s
         spriteRect->x = 50;
         spriteRect->y = 603;
 
-        
-
-        
-        
-
+        jumpSpeed = 0.2f;    
+        jumpApex = 553;
         
         
+    
+        SDL_QueryTexture(bg->getTexture(), NULL,NULL, &textureWidth, NULL);
         
     }
 
@@ -41,8 +40,20 @@ void Player::draw(SDL_Renderer *renderer){
             initialFrame = 0;
         }
     } else if(state == State::RIGHT || state == State::LEFT || state == State::JUMP){
-        if(initialFrame >= 13) {
-                initialFrame = 0;
+        if(initialFrame >= 14) {
+            initialFrame = 0;
+        }
+    } else if (state == State::ATTACK){
+        if(initialFrame >= 15){
+            initialFrame = 0;
+        }
+    } else if(state == State::DYING){
+        if(initialFrame >= 14){
+            initialFrame = 0;
+        }
+    } else if(state == State::DEAD){
+        if(initialFrame >= 14){
+            initialFrame = 0;
         }
     }
 
@@ -54,7 +65,7 @@ void Player::draw(SDL_Renderer *renderer){
     }
 
     
-
+    
     
 
     if(state == State::IDDLE_RIGHT){
@@ -62,25 +73,21 @@ void Player::draw(SDL_Renderer *renderer){
     } else if (state == State::IDDLE_LEFT){
         spriteSheet->drawFlippedRect(renderer, "iddle_blinking", initialFrame, spriteRect, flip);
     } else if (state == State::RIGHT){
-        
         spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
     } else if (state == State::LEFT){
-        
         spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, spriteRect, flip);
-    // } else if (state == State::JUMP){
-        // check time after it jumped, fall down after one second
-    // TODO popraviti kad se promijeni state da se vrati skok
-    // if((SDL_GetTicks() / 1000) - this->startTime >= 1){
-        // provjeravamo da li je y koordiranta manja od pocetno zadane, tad znamo da je igrac skocio
-    //         if(this->spriteRect->y <= 600){
-    //             this->spriteRect->y += 30;
-    //             this->spriteRect->x += 30;
-                // reset start time variable so player is able to jump again
-    //             startTime = 0;
-    //         } 
-    // }
-    //     spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);
+    } else if (state == State::JUMP){
+         spriteSheet->drawRect(renderer, "walking", initialFrame, spriteRect);   
+    } else if (state == State::ATTACK){
+        spriteSheet->drawRect(renderer, "slashing", initialFrame, spriteRect);
+    } else if (state == State::DYING){
+        spriteSheet->drawRect(renderer, "dying", initialFrame, spriteRect);
+    } else if (state == State::DEAD){
+        spriteSheet->drawRect(renderer, "dead", initialFrame, spriteRect);
     }
+    
+    
+    
     
 }
 
@@ -104,8 +111,14 @@ void Player::move(int dX, int dY){
         return;
     }
 
+    // If dead restrict move
+    
+
+
+    
+    
     // Restricts to move to the end of texture
-    if(bg->getSrcRect()->x + dX > 13930){
+    if(bg->getSrcRect()->x + dX > textureWidth - 1070){
         return;
     }
     
@@ -124,7 +137,24 @@ void Player::move(int dX, int dY){
 }
 
 void Player::move(){
-    Sprite::move();
+    if(state != 0){
+        // walking left
+        if(state == 2){
+            move(-5, 0);
+        }
+        // walking right
+        if(state == 3){
+            move(5, 0);
+        }
+        // jumping
+        if(state == 4){
+            // move(0, -30);
+            jump();
+        } if (state == 8){
+            // std::cout << "Slash" << std::endl;
+        }
+        
+    }
 }
 
 /*
@@ -136,7 +166,6 @@ params:
 return:  void - 
 */
 void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
-
     switch (event.keysym.sym)
     {
     case SDLK_d:
@@ -148,11 +177,14 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
         isMoving = true;
         break;
     case SDLK_SPACE:        
-        
         state = State::JUMP;
-        
         break;    
-
+    case SDLK_j:
+        state = State::ATTACK;
+        break;
+    case SDLK_k:
+        state = State::DYING;
+        break;
     default:
         break;
     }
@@ -160,5 +192,59 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     
 }
 
+
+
+void Player::jump(){
+    
+    if(spriteRect->y > jumpApex){
+        spriteRect->y -= 100 * jumpSpeed;
+        jumping = true;
+    }
+    
+    
+}
+
+
+bool Player::checkCollision(SDL_Rect *enemy){
+    // Border Box collision
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    
+    leftA = spriteRect->x;
+    rightA = spriteRect->x + (spriteRect->w - 40); // we subtract 40 px of width and height because our sprites are 128x128 and they're placed in the middle so we have blank space around them
+    topA = spriteRect->y;
+    bottomA = spriteRect->y + (spriteRect->h - 40);
+
+    
+    leftB = enemy->x;
+    rightB = enemy->x + (enemy->w - 40);
+    topB = enemy->y;
+    bottomB = enemy->y + (enemy->h - 40);
+
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    return true;
+}
 
 

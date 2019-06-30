@@ -16,10 +16,12 @@ SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer, int numberOfA
     int counter = 0;
     while(counter < numberOfAnimations) {
         is >> animation;
+        // std::cout << "Animation name: " << animation << std::endl;
         
         animations[animation] = Rects();
 
         is >> totalFrames;
+        // std::cout << "Total frames: " <<  totalFrames << std::endl;
         for(int i = 0; i < totalFrames; i++) {
             animations[animation].push_back(std::make_shared<Rect>(is));
         }

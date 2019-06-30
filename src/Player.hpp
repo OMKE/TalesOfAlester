@@ -10,17 +10,23 @@
 class Player : public Sprite, public KeyboardEventListener{
     private:
         bool isMoving;
+        float jumpSpeed;
+        float jumpApex;
+        bool jumping = false;
+        int textureWidth;
     public:
         Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128, std::shared_ptr<Background> bg = nullptr);
         ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
         virtual void move() override;
+        void jump();
         virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
         bool getIsMoving();
         void setIsMoving(bool move);
+        bool checkCollision(SDL_Rect *enemy);
 
-
+        
 
 };
 

@@ -25,6 +25,10 @@ void Enemy::draw(SDL_Renderer *renderer){
         if(initialFrame >= 20){
             initialFrame = 0;
         }
+    } else if(state == State::DYING){
+        if(initialFrame >= 19){
+            initialFrame = 0;
+        }
     }
     frameCounter++;
     if(frameCounter%frameSkip == 0){
@@ -35,6 +39,8 @@ void Enemy::draw(SDL_Renderer *renderer){
 
     if(state == State::LEFT){
         spriteSheet->drawFlippedRect(renderer, "walking", initialFrame, spriteRect, flip);
+    } else if (state == State::DYING){
+        spriteSheet->drawFlippedRect(renderer, "dying", initialFrame, spriteRect, flip);
     }
 }
 
@@ -55,6 +61,9 @@ desc:
 return: void - 
 */
 void Enemy::listenForPlayerMove(std::shared_ptr<Player> player){
+    if(!moving){
+        return;
+    }
     if(player->getIsMoving()){
         move(-10, 0);
     } 
@@ -67,3 +76,7 @@ void Enemy::listenForPlayerMove(std::shared_ptr<Player> player){
         move(10, 0);
     }
 }
+
+
+void Enemy::setMoving(bool move){ this->moving = move; }
+bool Enemy::getMoving(){ return this->moving; }

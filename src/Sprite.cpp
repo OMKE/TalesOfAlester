@@ -68,3 +68,6 @@ void Sprite::setFrameSkip(int frameSkip){
 // testing
 int Sprite::getInitialFrame(){ return this->initialFrame; }
 void Sprite::setInitialFrame(int frame){ this->initialFrame = frame; }
+void Sprite::setSpriteRectX(int x){ this->spriteRect->x = x; }
+void Sprite::setSpriteRectY(int y){ this->spriteRect->y = y; }
+std::shared_ptr<Background> Sprite::getBackground(){ return this->bg; }
