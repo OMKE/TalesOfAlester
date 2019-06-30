@@ -15,8 +15,10 @@
 #include "EventListener.hpp"
 #include "Background.hpp"
 #include "IDrawable.hpp"
-#include "Camera.hpp"
+
 #include "IMovable.hpp"
+
+
 
 class Engine {
     private:
@@ -26,12 +28,11 @@ class Engine {
         std::vector<std::shared_ptr<EventListener>> listeners;
         std::vector<std::shared_ptr<IDrawable>> drawables;
         std::vector<std::shared_ptr<IMovable>> movables;
-        std::shared_ptr<Camera> camera;
-        int windowWidth;
-        int windowHeight;
+    
     public:
         Engine(std::string windowTitle, int windowWidth = 1000, int windowHeight = 1000);
         void loop();
+        int rangeRandomAlg(int min, int max);
         ~Engine();
 };
 

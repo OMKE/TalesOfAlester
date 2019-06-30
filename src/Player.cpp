@@ -1,8 +1,8 @@
 #include "Player.hpp"
 
 
-Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
-    : Sprite(sheet, width, height), KeyboardEventListener(){
+Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg)
+    : Sprite(sheet, width, height, bg), KeyboardEventListener() {
 
         
         
@@ -97,14 +97,25 @@ params:
 return: void - 
 */
 void Player::move(int dX, int dY){
-    // if(spriteRect->x <= 10 && dX == -10){
-    //     return;
-    // }
+    isMoving = true;
 
+    // Restricts to move to left end of texture
+    if(bg->getSrcRect()->x + dX <= 0){
+        return;
+    }
+
+    
+    if(bg->getSrcRect()->x + dX > 13930){
+        return;
+    }
+    
+    
     // spriteRect->x += dX;
     // spriteRect->y += dY;
-    spriteRect->x += dX;
-    spriteRect->y += dY;
+    bg->setSrcRectX(bg->getSrcRect()->x + dX);
+    bg->setDestRectW(bg->getDestRect()->w - dX);
+    
+
     
 }
 
@@ -126,9 +137,11 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     {
     case SDLK_d:
         state = State::RIGHT;
+        isMoving = true;
         break;
     case SDLK_a:
         state = State::LEFT;
+        isMoving = true;
         break;
     case SDLK_SPACE:        
         

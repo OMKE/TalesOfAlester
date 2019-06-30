@@ -1,8 +1,9 @@
 #include "Engine.hpp"
 
 
-Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight)
-    : windowWidth{windowWidth}, windowHeight{windowHeight} {
+
+
+Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight){
 
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
@@ -42,31 +43,41 @@ void Engine::loop(){
     auto bg = std::make_shared<Background>("./assets/world/village.png", renderer);
     auto playerSpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 2);
     auto enemySpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 1);
-    auto player = std::make_shared<Player>(playerSpriteSheet, 128, 128);
-    auto enemy = std::make_shared<Enemy>(enemySpriteSheet, 128, 128);
-    
+    auto player = std::make_shared<Player>(playerSpriteSheet, 128, 128, bg);
+    // auto enemy = std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg, 2000);
 
-    camera = std::make_shared<Camera>(windowWidth, windowHeight, bg, player);
+
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    int numOfEnemies = rand() % 30 + 1; 
+    // int randomPosition = rand() % 1000 + 2000; // generates random position for enemy
+    // std::cout << randomPosition << std::endl;
+    std::cout << "Number of enemies: " << numOfEnemies << std::endl;
+    for(int i = 0; i < numOfEnemies; i++){
+        enemies.push_back(std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg, rangeRandomAlg(2000, 10000)));
+    }
 
     
         
 
     
     drawables.push_back(bg);
-    drawables.push_back(camera);
     drawables.push_back(player);
     
-    drawables.push_back(enemy);
+
+    for(auto enemy:enemies){
+        enemy->setFrameSkip(4);
+        drawables.push_back(enemy);
+    }
 
     movables.push_back(player);
-    movables.push_back(enemy);
+    
 
     
     
 
     listeners.push_back(player);
     player->setFrameSkip(6);
-    enemy->setFrameSkip(4);
+    // enemy->setFrameSkip(4);
 
 
     while(running){
@@ -81,8 +92,10 @@ void Engine::loop(){
                     if(event.type == SDL_KEYUP){
                         if(player->getState() == 3){
                             player->setState(0);
+                            player->setIsMoving(false);
                         } else if (player->getState() == 2){
                             player->setState(1);
+                            player->setIsMoving(false);
                         } else if (player->getState() == 4) {
                             player->setState(4);
                         }
@@ -101,13 +114,15 @@ void Engine::loop(){
         for(const auto movable: movables){
             movable->move();
         }
-
-
+        
+        for(auto enemy: enemies){
+            enemy->listenForPlayerMove(player);
+            }
         
         for(const auto drawable: drawables){
             drawable->draw(renderer);
         }
-        camera->follow();
+        
         
         
         
@@ -120,8 +135,19 @@ void Engine::loop(){
     }
 
     
-
-
-     
-    
 }   
+
+
+int Engine::rangeRandomAlg (int min, int max){
+    int n = max - min + 1;
+    int remainder = RAND_MAX % n;
+    int x;
+    do{
+        x = rand();
+    }while (x >= RAND_MAX - remainder);
+    return min + x % n;
+}
+
+
+bool Player::getIsMoving(){ return this->isMoving; }
+void Player::setIsMoving(bool move){ this->isMoving = move; }

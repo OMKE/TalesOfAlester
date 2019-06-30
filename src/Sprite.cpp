@@ -1,8 +1,8 @@
 #include "Sprite.hpp"
 
 
-Sprite::Sprite(std::shared_ptr<SpriteSheet> sheet, int width, int height) : IDrawable(), IMovable(), 
-    spriteSheet{sheet}, spriteRect(new SDL_Rect) {
+Sprite::Sprite(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg) : IDrawable(), IMovable(), 
+    spriteSheet{sheet}, spriteRect(new SDL_Rect), bg {bg} {
         spriteRect->x = 0;
         spriteRect->y = 603;
         spriteRect->w = width;
@@ -35,11 +35,11 @@ void Sprite::move(){
     if(state != 0){
         // walking left
         if(state == 2){
-            move(-2, 0);
+            move(-5, 0);
         }
         // walking right
         if(state == 3){
-            move(2, 0);
+            move(5, 0);
         }
         // jumping
         if(state == 4){

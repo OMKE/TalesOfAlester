@@ -9,15 +9,16 @@
 
 class Player : public Sprite, public KeyboardEventListener{
     private:
-        
+        bool isMoving;
     public:
-        Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128);
+        Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128, std::shared_ptr<Background> bg = nullptr);
         ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;
         virtual void move() override;
         virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
-        
+        bool getIsMoving();
+        void setIsMoving(bool move);
 
 
 
