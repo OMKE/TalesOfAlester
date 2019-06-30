@@ -20,6 +20,7 @@ class Sprite : public IDrawable, public IMovable {
         int frameSkip;
         int state;
         enum State: int { IDDLE_RIGHT = 0, IDDLE_LEFT = 1, LEFT = 2, RIGHT = 3, JUMP = 4, JUMP_SLASH =54, RUN_LEFT = 6, RUN_RIGHT=7, ATTACK = 8};
+        
     public:
         Sprite(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128);
         ~Sprite();
@@ -34,6 +35,7 @@ class Sprite : public IDrawable, public IMovable {
         int getState();
         void setState(int state);
         void setFrameSkip(int frameSkip);
+        SDL_Rect* getSpriteRect();
 };
 
 

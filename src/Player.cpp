@@ -1,14 +1,19 @@
 #include "Player.hpp"
 
 
-Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::shared_ptr<Background> bg)
-    : Sprite(sheet, width, height), KeyboardEventListener(), bg {bg} {
+Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height)
+    : Sprite(sheet, width, height), KeyboardEventListener(){
 
+        
         
 
         state = State::IDDLE_RIGHT;
         spriteRect->x = 50;
         spriteRect->y = 603;
+
+        
+
+        
         
 
         
@@ -17,7 +22,7 @@ Player::Player(std::shared_ptr<SpriteSheet> sheet, int width, int height, std::s
     }
 
 Player::~Player(){
-
+    
 }
 
 
@@ -96,29 +101,17 @@ params:
 return: void - 
 */
 void Player::move(int dX, int dY){
-    if(spriteRect->x <= 10 && dX == -10){
-        return;
-    }
+    // if(spriteRect->x <= 10 && dX == -10){
+    //     return;
+    // }
+
+    // spriteRect->x += dX;
+    // spriteRect->y += dY;
+    spriteRect->x += dX;
+    spriteRect->y += dY;
+    
     
 
-    if(spriteRect->x <= 300 || spriteRect->x + dX <= 300 || dX < 0){
-        if(dX < 0){
-            spriteRect->x += dX;
-            spriteRect->y += dY;    
-        } else if (dX > 0) {
-            spriteRect->x += dX / 3;
-            spriteRect->y += dY / 3;
-            
-        }
-        
-        
-    }
-    
-    if(dX > 0){
-        this->bg->setSrcRectX(this->bg->getSrcRectX() + dX);
-        this->bg->setDestRectX(this->bg->getDestRectX() - dX);
-    } 
-    
 
     
 }
@@ -137,11 +130,11 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     {
     case SDLK_d:
         state = State::RIGHT;
-        move(10, 0);
+        move(15, 0);
         break;
     case SDLK_a:
         state = State::LEFT;
-        move(-10,0);
+        move(-15,0);
         
         
         break;

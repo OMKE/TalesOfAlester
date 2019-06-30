@@ -15,6 +15,7 @@ Sprite::~Sprite(){
     // delete spriteSheet;
     // spriteSheet = nullptr;
     delete spriteRect;
+    
 }
 
 // void Sprite::draw(SDL_Renderer *renderer){
@@ -37,6 +38,7 @@ int Sprite::getSpriteRectY(){ return this->spriteRect->w; }
 int Sprite::getSpriteRectH(){ return this->spriteRect->h; }
 int Sprite::getState(){ return this->state; }
 void Sprite::setState(int state){ this->state = state; }
+SDL_Rect* Sprite::getSpriteRect(){ return this->spriteRect; }
 void Sprite::setFrameSkip(int frameSkip){ 
     if(frameSkip < 0) {
         frameSkip = 0;

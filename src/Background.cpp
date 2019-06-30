@@ -16,7 +16,7 @@ Background::Background(std::string path, SDL_Renderer *renderer)
 
         destRect->x = 0;
         destRect->y = 0;
-        destRect->w = 10000;
+        destRect->w = 15000;
         destRect->h = 1000;
         
 
@@ -42,7 +42,14 @@ Background::~Background(){
 }
 
 
+SDL_Rect* Background::getDestRect(){ return this->destRect; }
+SDL_Rect* Background::getSrcRect(){ return this->srcRect; }
+SDL_Texture* Background::getTexture(){ return this->bg; }
 void Background::setSrcRectX(int x){ this->srcRect->x = x; }
 int Background::getSrcRectX(){ return this->srcRect->x; }
 void Background::setDestRectX(int x){ this->destRect->x = x; }
 int Background::getDestRectX(){ return this->destRect->x; }
+int Background::getDestRectW(){ return this->destRect->w; }
+int Background::getSrcRectW(){ return this->srcRect->w; }
+void Background::setDestRectW(int w){ this->destRect->w = w; }
+void Background::setSrcRectW(int w){ this->srcRect->w = w; }

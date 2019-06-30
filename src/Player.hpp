@@ -6,13 +6,12 @@
 #include "KeyboardEventListener.hpp"
 
 
-#include "Background.hpp"
 
 class Player : public Sprite, public KeyboardEventListener{
     private:
-        std::shared_ptr<Background> bg;
+        
     public:
-        Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128, std::shared_ptr<Background> bg = nullptr);
+        Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128);
         ~Player();
         virtual void draw(SDL_Renderer *renderer) override;
         virtual void move(int dX, int dY) override;

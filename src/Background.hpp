@@ -23,10 +23,20 @@ class Background : public IDrawable {
         ~Background();
         void draw(SDL_Renderer *renderer) override;
         
+
+        SDL_Rect *getSrcRect();
+        SDL_Rect *getDestRect();
+        SDL_Texture *getTexture();
         void setSrcRectX(int x);
         int getSrcRectX();
         void setDestRectX(int x);
         int getDestRectX();
+        int getDestRectW();
+        int getSrcRectW();
+        void setDestRectW(int w);
+        void setSrcRectW(int w);
+
+        
         
 
 

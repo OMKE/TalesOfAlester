@@ -2,11 +2,11 @@
 
 
 Enemy::Enemy(std::shared_ptr<SpriteSheet> sheet, int width, int height)
-    : Sprite(sheet, width, height), bg{bg} {
+    : Sprite(sheet, width, height) {
 
         state = State::LEFT;
-        spriteRect->x = 100;
-        changedBgPos = bg->getSrcRectX();
+        spriteRect->x = 200;
+        
         
     }
 
@@ -16,9 +16,7 @@ Enemy::~Enemy(){
 
 void Enemy::draw(SDL_Renderer *renderer){
     
-    if(changedBgPos == bg->getSrcRectX()){
-        move(10, 0);
-    }
+    
 
     if(state == State::LEFT){
         if(initialFrame >= 20){
