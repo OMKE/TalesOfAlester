@@ -28,9 +28,15 @@ SpriteSheet::SpriteSheet(std::istream &is, SDL_Renderer *renderer, int numberOfA
         counter++;
     }
 
-    
-    
 
+}
+SpriteSheet::~SpriteSheet(){
+    SDL_DestroyTexture(texture);
+    // for(auto [k,v] : animations){
+    //     for(auto animation: k){
+    //         delete v;
+    //     }
+    // }
 }
 
 
