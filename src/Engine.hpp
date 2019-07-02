@@ -18,6 +18,8 @@
 #include "IDrawable.hpp"
 #include "IMovable.hpp"
 #include "SoundManager.hpp"
+#include "Image.hpp"
+#include "Text.hpp"
 
 
 
@@ -30,14 +32,18 @@ class Engine {
         std::vector<std::shared_ptr<IDrawable>> drawables;
         std::vector<std::shared_ptr<IMovable>> movables;
         std::shared_ptr<SoundManager> soundManager;
-        
+        int startTime = 0;
         
     public:
         Engine(std::string windowTitle, int windowWidth = 1000, int windowHeight = 1000);
         void loop();
         int rangeRandomAlg(int min, int max);
-        void handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player, int *deltaTime);
+        void handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player);
+        void deleteEnemy(std::vector<std::shared_ptr<Enemy>> enemies);
         ~Engine();
+
+        
+        
 };
 
 

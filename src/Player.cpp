@@ -248,3 +248,8 @@ bool Player::checkCollision(SDL_Rect *enemy){
 }
 
 
+
+bool Player::getIsMoving(){ return this->isMoving; }
+void Player::setIsMoving(bool move){ this->isMoving = move; }
+bool Player::getIsDead(){ return this->isDead; }
+void Player::setIsDead(bool dead){ this->isDead = dead; }

@@ -3,6 +3,7 @@
 
 
 
+
 Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight){
 
     SDL_Init(SDL_INIT_VIDEO);
@@ -16,10 +17,13 @@ Engine::Engine(std::string windowTitle, int windowWidth, int windowHeight){
     // if(!window) throw SDL_GetError();
     // if(!renderer) throw SDL_GetError();
 
+
+
     
 
 }
 Engine::~Engine(){
+    
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
@@ -35,17 +39,16 @@ Engine::~Engine(){
 void Engine::loop(){
 
     
-    Uint64 NOW = SDL_GetPerformanceCounter();
-    Uint64 LAST = 0;
 
     
-    int deltaTime = 0;
     int maxDelay = 1000 / this->FPS;
     int frameStart = 0;
     int frameEnd = 0;
     bool running = true;
 
     soundManager->playMusic("./assets/sounds/rpg_village02_loop.wav");
+    soundManager->insertSound("./assets/sounds/swish.wav", "swish");
+    soundManager->insertSound("./assets/sounds/walk.wav", "walk");
 
     SDL_Event event;
     // Initializaiton
@@ -55,10 +58,10 @@ void Engine::loop(){
     auto enemySpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 2);
     auto player = std::make_shared<Player>(playerSpriteSheet, 128, 128, bg);
     // auto enemy = std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg, 2000);
-
-
     std::vector<std::shared_ptr<Enemy>> enemies;
-    int numOfEnemies = rand() % 10 + 1; 
+
+    
+    int numOfEnemies = rand() % 10 + 20; 
     // int randomPosition = rand() % 1000 + 2000; // generates random position for enemy
     // std::cout << randomPosition << std::endl;
     std::cout << "Number of enemies: " << numOfEnemies << std::endl;
@@ -67,11 +70,19 @@ void Engine::loop(){
     }
 
     
-        
-
+    int enemyKillCounter = 0;
+    
+    std::shared_ptr<Text> title = std::make_shared<Text>(renderer, 28, "Tales of Alester", 350, 30, 255, 255, 255);
+    std::shared_ptr<Text> enemyKilled = std::make_shared<Text>(renderer, 28, "Enemies killed: " + std::to_string(enemyKillCounter), 700, 50, 255,255,255);
+    std::shared_ptr<Image> moveInfo = std::make_shared<Image>(renderer, "./assets/world/move.png", 350, 350);
+    
+    
     
     drawables.push_back(bg);
     drawables.push_back(player);
+    drawables.push_back(title);
+    drawables.push_back(enemyKilled);
+    drawables.push_back(moveInfo);
     
 
     for(auto enemy:enemies){
@@ -90,12 +101,8 @@ void Engine::loop(){
 
 
     while(running){
-        LAST = NOW;
-        NOW = SDL_GetPerformanceCounter();
-        deltaTime = ((NOW - LAST) * 1000 / (int)SDL_GetPerformanceFrequency() );
-
-    
-     
+        
+        
         
         frameStart = SDL_GetTicks();
         while(SDL_PollEvent(&event)){
@@ -106,6 +113,7 @@ void Engine::loop(){
                 for(size_t i = 0; i < listeners.size(); i++) {
                     listeners[i]->listen(event);
                     if(event.type == SDL_KEYUP){
+                        
                         if(player->getState() == 3){
                             player->setState(0);
                             player->setIsMoving(false);
@@ -129,6 +137,11 @@ void Engine::loop(){
         
 
         for(const auto movable: movables){
+            if(player->getIsDead()){
+                player->setState(10);
+                player->setIsMoving(false);
+                continue;
+            }
             movable->move();
         }
         
@@ -139,18 +152,14 @@ void Engine::loop(){
         for(const auto drawable: drawables){
             drawable->draw(renderer);
         }
+
+        soundManager->waitForPlayerInput(player);
         
+        if(frameStart / 1000 == 4){
+            moveInfo->setPresent(false);
+        }
         
-        // std::cout << "Start time: " << TIME.startTime / 1000 << std::endl;
-        
-        
-        // std::cout << "Old time: " << TIME.oldTime / 1000 + 2 << std::endl;
-        // if(TIME.startTime / 1000 == TIME.oldTime / 1000 + 2){
-        //     std::cout << "2 sec nakon" << std::endl;
-        // }
-        
-        
-        handleStateEvents(enemies, player, &deltaTime);
+        handleStateEvents(enemies, player);
         
         
         SDL_RenderPresent(renderer);
@@ -162,47 +171,56 @@ void Engine::loop(){
     }
 
     
+
+    
 }   
 
-void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player, int *deltaTime){
+void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player){
+
+
+    // If player was hit, it was set to dying state, it's in dying state set it to dead = laying position
+    if(player->getState() == 9 && (SDL_GetTicks() / 1000) - startTime >= 1){
+                
+        player->setState(10);   
+        player->setIsDead(true);
+            
+    }
     for(auto enemy: enemies){
             
+        if(!enemy->getMoving() && (SDL_GetTicks() / 1000) - startTime >= 1){
+            enemy->setState(0);
+        }
         
         if(player->checkCollision(enemy->getSpriteRect())){
             // Collision happened
+           startTime = SDL_GetTicks() / 1000;
 
-            // If player is dead, after some time set player sprite to laying position = dead
-            if(player->getState() == 9){
-                if(*deltaTime >= 17){
-                    player->setState(10);
-                }
-            } 
-            
-            
-            
-            
-            // If collision is happened and player is not in his attack state, set his state to 9 = dying
+
+           // If collision is happened and player is not in his attack state, set his state to 9 = dying
             if(player->getState() == 0 || player->getState() == 1 || player->getState() == 2 || player->getState() == 3) {
                 player->setState(9);
-            } 
+                
+            }  
+            
+            
             // If player is in attack position, set enemy state to dead, set moving of enemy to false, and with setState(0) it won't draw it to the screen
             // TODO kad enemy umre, postaviti ga u laying position = dead i da tu ostane
             if(player->getState() == 8){
-                enemy->setState(9);
-                enemy->setSpriteRectX(player->getBackground()->getDestRect()->x); // works in some way
-            
-                enemy->setMoving(false);
-                enemy->setState(0);
-                player->setState(0);
                 
+                
+                enemy->setMoving(false);
+                enemy->setSpriteRectX(enemy->getSpriteRectX() + 100);
+                enemy->setState(9);
+                      
                 
             }
-                
-            
-            
+           
         }
+        
     }
+    
 }
+
 
 
 int Engine::rangeRandomAlg (int min, int max){
@@ -216,5 +234,6 @@ int Engine::rangeRandomAlg (int min, int max){
 }
 
 
-bool Player::getIsMoving(){ return this->isMoving; }
-void Player::setIsMoving(bool move){ this->isMoving = move; }
+
+
+

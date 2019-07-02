@@ -14,6 +14,7 @@ class Player : public Sprite, public KeyboardEventListener{
         float jumpApex;
         bool jumping = false;
         int textureWidth;
+        bool isDead = false;
     public:
         Player(std::shared_ptr<SpriteSheet> sheet, int width = 128, int height = 128, std::shared_ptr<Background> bg = nullptr);
         ~Player();
@@ -22,9 +23,12 @@ class Player : public Sprite, public KeyboardEventListener{
         virtual void move() override;
         void jump();
         virtual void listenForKeyboardEvent(SDL_KeyboardEvent &event) override;
+        bool checkCollision(SDL_Rect *enemy);
         bool getIsMoving();
         void setIsMoving(bool move);
-        bool checkCollision(SDL_Rect *enemy);
+        
+        bool getIsDead();
+        void setIsDead(bool dead);
 
         
 
