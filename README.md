@@ -1,15 +1,15 @@
-#Tales of Alester
+<h2>Tales of Alester</h3>
 
-###Follow Alester on his way back to the throne. 
-He was imprisoned in the dark cave of Nazaar. With help of some great people, he managed to escape but now he has a whole new adventure in front of him.
+<h3>Follow Alester on his way back to the throne.</h3>
+<p>He was imprisoned in the dark cave of Nazaar. With help of some great people, he managed to escape but now he has a whole new adventure in front of him.</p>
 
 
 
 ![](https://i.imgur.com/udthnqW.png)
 
 
-##How to play
-###MacOS
+<h2>How to play</h2>
+<h3>MacOS</h3>
 If you don't have SDL2 installed:
 
 
@@ -25,10 +25,10 @@ If you don't have SDL2 installed:
 `$ brew install sdl2_mixer`
 
 
-###Compile with: `$ make`
+<h3>Compile with:</h3> `$ make`
 
 
-###Run with: `$ make run`
+<h3>Run with: </h3> `$ make run`
 
 
 
