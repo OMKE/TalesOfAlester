@@ -185,6 +185,8 @@ void Player::listenForKeyboardEvent(SDL_KeyboardEvent &event){
     case SDLK_k:
         state = State::DYING;
         break;
+    case SDLK_ESCAPE:
+        quit = true;
     default:
         break;
     }
@@ -253,3 +255,4 @@ bool Player::getIsMoving(){ return this->isMoving; }
 void Player::setIsMoving(bool move){ this->isMoving = move; }
 bool Player::getIsDead(){ return this->isDead; }
 void Player::setIsDead(bool dead){ this->isDead = dead; }
+bool Player::getQuit(){ return this->quit; }

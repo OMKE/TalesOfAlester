@@ -49,6 +49,10 @@ void Engine::loop(){
     soundManager->playMusic("./assets/sounds/rpg_village02_loop.wav");
     soundManager->insertSound("./assets/sounds/swish.wav", "swish");
     soundManager->insertSound("./assets/sounds/walk.wav", "walk");
+    soundManager->insertSound("./assets/sounds/pain.wav", "pain");
+    soundManager->insertSound("./assets/sounds/dead.wav", "dead");
+    soundManager->insertSound("./assets/sounds/game_over.wav", "game_over");
+    soundManager->insertSound("./assets/sounds/monster_roar.wav", "monster_roar");
 
     SDL_Event event;
     // Initializaiton
@@ -96,7 +100,7 @@ void Engine::loop(){
 
     listeners.push_back(player);
     player->setFrameSkip(2);
-    // enemy->setFrameSkip(4);
+    
     
 
     while(running){
@@ -122,10 +126,13 @@ void Engine::loop(){
                             player->setIsMoving(false);
                         } else if (player->getState() == 4) {
                             player->setState(4);
+                        } else if(player->getQuit()){
+                            running = false;
                         } 
                         else {
                             player->setState(0);
                         }
+
                     }   
                 }
             }
@@ -156,7 +163,7 @@ void Engine::loop(){
             drawable->draw(renderer);
         }
         
-        soundManager->waitForPlayerInput(player);
+        soundManager->waitForInput(player, enemies);
         
         if(frameStart / 1000 == 4){
             moveInfo->setPresent(false);
@@ -206,7 +213,7 @@ void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std:
            // If collision is happened and player is not in his attack state, set his state to 9 = dying
             if(player->getState() == 0 || player->getState() == 1 || player->getState() == 2 || player->getState() == 3) {
                 player->setState(9);
-                
+                game_over = true;
             }  
             
             
@@ -271,6 +278,13 @@ void Engine::drawTextOnScreen(std::stringstream &ss, int &enemyKillCounter, SDL_
         ss << "You're a true warrior!";
         Text *endGameText = new Text();
         endGameText->draw(renderer, 28, ss, 270, 270, 255,255,255);
+        delete endGameText;
+    }
+
+    if(game_over){
+        ss << "GAME OVER!";
+        Text *endGameText = new Text();
+        endGameText->draw(renderer, 50, ss, 330, 370, 255,255,255);
         delete endGameText;
     }
 

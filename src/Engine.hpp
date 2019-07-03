@@ -33,6 +33,7 @@ class Engine {
         std::vector<std::shared_ptr<IMovable>> movables;
         std::shared_ptr<SoundManager> soundManager;
         int startTime = 0;
+        bool game_over = false;
 
         int rangeRandomAlg(int min, int max);
         void handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player, int &enemyKilled);

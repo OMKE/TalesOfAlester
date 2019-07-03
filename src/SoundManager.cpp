@@ -32,8 +32,8 @@ void SoundManager::playMusic(std::string path){
     }
 }
 
-void SoundManager::playSound(std::string soundName){
-    Mix_Volume(-1, 50);
+void SoundManager::playSound(std::string soundName, int volume){
+    Mix_Volume(-1, volume);
     Mix_PlayChannel(-1, sounds[soundName], 0);
 }
 
@@ -45,12 +45,25 @@ void SoundManager::insertSound(std::string path, std::string soundName){
 }
 
 
-void SoundManager::waitForPlayerInput(std::shared_ptr<Player> player){
+void SoundManager::waitForInput(std::shared_ptr<Player> player, std::vector<std::shared_ptr<Enemy>> enemies){
 
     if(player->getState() == 8){
-        playSound("swish");
+        playSound("swish", 50);
     } else if(player->getState() == 2 || player->getState() == 3){
-        playSound("walk");
+        playSound("walk", 20);
+    } else if(player->getState() == 9){
+        playSound("dead", 50);
+        playSound("game_over", 50);
+    } 
+    // Plays a monster sound 
+    if(SDL_GetTicks() / 1000 == 15){
+        playSound("monster_roar", 20);
+    }
+
+    for(auto& enemy: enemies){
+        if(enemy->getState() == 9){
+            playSound("pain", 30);
+        }
     }
 
 }

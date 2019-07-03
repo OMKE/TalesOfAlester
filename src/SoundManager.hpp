@@ -5,9 +5,10 @@
 #include <iostream>
 #include <map>
 
-
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #include "Player.hpp"
+#include "Enemy.hpp"
 
 class SoundManager {
 
@@ -19,9 +20,9 @@ class SoundManager {
         SoundManager();
         ~SoundManager();
         void playMusic(std::string path);
-        void playSound(std::string soundName);
+        void playSound(std::string soundName, int volume);
         void insertSound(std::string path, std::string soundName);
-        void waitForPlayerInput(std::shared_ptr<Player> player);
+        void waitForInput(std::shared_ptr<Player> player, std::vector<std::shared_ptr<Enemy>> enemies);
 };
 
 
