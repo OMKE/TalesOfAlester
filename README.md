@@ -25,10 +25,12 @@ If you don't have SDL2 installed:
 `$ brew install sdl2_mixer`
 
 
-<h3>Compile with: `$ make`</h3> 
+<h3>Compile with: </h3>  
+`$ make run`
 
 
-<h3>Run with: `$ make run`</h3> 
+<h3>Run with:</h3>  
+`$ make run`
 
 
 
