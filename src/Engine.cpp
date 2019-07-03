@@ -197,6 +197,7 @@ void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std:
                 
         player->setState(10);   
         player->setIsDead(true);
+        game_over = true;
             
     }
     for(auto enemy: enemies){
@@ -213,7 +214,7 @@ void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std:
            // If collision is happened and player is not in his attack state, set his state to 9 = dying
             if(player->getState() == 0 || player->getState() == 1 || player->getState() == 2 || player->getState() == 3) {
                 player->setState(9);
-                game_over = true;
+                
             }  
             
             
@@ -281,7 +282,7 @@ void Engine::drawTextOnScreen(std::stringstream &ss, int &enemyKillCounter, SDL_
         delete endGameText;
     }
 
-    if(game_over){
+    if(game_over == true){
         ss << "GAME OVER!";
         Text *endGameText = new Text();
         endGameText->draw(renderer, 50, ss, 330, 370, 255,255,255);
