@@ -33,13 +33,17 @@ class Engine {
         std::vector<std::shared_ptr<IMovable>> movables;
         std::shared_ptr<SoundManager> soundManager;
         int startTime = 0;
-        
+
+        int rangeRandomAlg(int min, int max);
+        void handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player, int &enemyKilled);
+        void deleteEnemy(std::vector<std::shared_ptr<Enemy>> enemies);
+        void drawTextOnScreen(std::stringstream &ss, int &enemyKillCounter, SDL_Renderer *renderer);
+
+        int numOfEnemies = 0;
     public:
         Engine(std::string windowTitle, int windowWidth = 1000, int windowHeight = 1000);
         void loop();
-        int rangeRandomAlg(int min, int max);
-        void handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player);
-        void deleteEnemy(std::vector<std::shared_ptr<Enemy>> enemies);
+        
         ~Engine();
 
         

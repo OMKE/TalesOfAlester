@@ -57,31 +57,30 @@ void Engine::loop(){
     auto playerSpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 5); // last parameter is number of animations which are stored in sheet.txt
     auto enemySpriteSheet = std::make_shared<SpriteSheet>(is, renderer, 2);
     auto player = std::make_shared<Player>(playerSpriteSheet, 128, 128, bg);
-    // auto enemy = std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg, 2000);
+    
+
     std::vector<std::shared_ptr<Enemy>> enemies;
 
     
-    int numOfEnemies = rand() % 10 + 20; 
-    // int randomPosition = rand() % 1000 + 2000; // generates random position for enemy
-    // std::cout << randomPosition << std::endl;
+    // Generates random number of enemies from 10 to 20
+    numOfEnemies = rand() % 10 + 20; 
     std::cout << "Number of enemies: " << numOfEnemies << std::endl;
     for(int i = 0; i < numOfEnemies; i++){
         enemies.push_back(std::make_shared<Enemy>(enemySpriteSheet, 128, 128, bg, rangeRandomAlg(2000, 15000)));
     }
 
-    
+    // Counts how many enemies player has killed
     int enemyKillCounter = 0;
     
-    std::shared_ptr<Text> title = std::make_shared<Text>(renderer, 28, "Tales of Alester", 350, 30, 255, 255, 255);
-    std::shared_ptr<Text> enemyKilled = std::make_shared<Text>(renderer, 28, "Enemies killed: " + std::to_string(enemyKillCounter), 700, 50, 255,255,255);
+    // An image of movement info
     std::shared_ptr<Image> moveInfo = std::make_shared<Image>(renderer, "./assets/world/move.png", 350, 350);
+
+    
     
     
     
     drawables.push_back(bg);
     drawables.push_back(player);
-    drawables.push_back(title);
-    drawables.push_back(enemyKilled);
     drawables.push_back(moveInfo);
     
 
@@ -98,9 +97,10 @@ void Engine::loop(){
     listeners.push_back(player);
     player->setFrameSkip(2);
     // enemy->setFrameSkip(4);
-
+    
 
     while(running){
+        
         
         
         
@@ -149,17 +149,24 @@ void Engine::loop(){
             enemy->listenForPlayerMove(player);
             }
         
+
+        
+        
         for(const auto drawable: drawables){
             drawable->draw(renderer);
         }
-
+        
         soundManager->waitForPlayerInput(player);
         
         if(frameStart / 1000 == 4){
             moveInfo->setPresent(false);
         }
         
-        handleStateEvents(enemies, player);
+        handleStateEvents(enemies, player, enemyKillCounter);
+
+        
+        std::stringstream ss;
+        drawTextOnScreen(ss, enemyKillCounter,renderer);
         
         
         SDL_RenderPresent(renderer);
@@ -175,7 +182,7 @@ void Engine::loop(){
     
 }   
 
-void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player){
+void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std::shared_ptr<Player> player, int &enemyKilled){
 
 
     // If player was hit, it was set to dying state, it's in dying state set it to dead = laying position
@@ -211,7 +218,7 @@ void Engine::handleStateEvents(std::vector<std::shared_ptr<Enemy>> enemies, std:
                 enemy->setMoving(false);
                 enemy->setSpriteRectX(enemy->getSpriteRectX() + 100);
                 enemy->setState(9);
-                      
+                enemyKilled++;
                 
             }
            
@@ -235,5 +242,44 @@ int Engine::rangeRandomAlg (int min, int max){
 
 
 
+/*
+** drawTextOnScreen **
+desc:
+    draws text on screen, ss needs text to be displayed
+params:
+    ss - stringstream reference, 
+    enemyKillCounter - reference to enemyKillCounter, 
+    renderer - pointer to render target, 
+return: void - 
+*/
+void Engine::drawTextOnScreen(std::stringstream &ss, int &enemyKillCounter, SDL_Renderer *renderer){
+    
+    ss << "Tales of Alester";
+    Text *title = new Text();
+    title->draw(renderer, 28, ss, 350, 30, 255,255,255);
+    delete title;
+    
+    ss << "Enemy killed: ";
+    Text *enemyKilledText = new Text();
+    enemyKilledText->draw(renderer, 28, ss, 600, 100, 255,255,255);
+    delete enemyKilledText;
+    
+    
+    
 
+    if(enemyKillCounter == numOfEnemies){
+        ss << "You're a true warrior!";
+        Text *endGameText = new Text();
+        endGameText->draw(renderer, 28, ss, 270, 270, 255,255,255);
+        delete endGameText;
+    }
 
+    ss << enemyKillCounter;
+    
+    Text *enemyKilledCC = new Text();
+    enemyKilledCC->draw(renderer, 28, ss, 830, 100, 255, 255, 255);
+    delete enemyKilledCC;
+
+    
+
+}
