@@ -26,7 +26,7 @@ If you don't have SDL2 installed:
 
 
 <h3>Compile with: </h3>  
-`$ make run`
+`$ make compile`
 
 
 <h3>Run with:</h3>  
